@@ -123,6 +123,12 @@ console.log(foo, url);
 
 See [the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) for options including `import as`, `export as` and exporting multiple items.
 
+## Adding File Upload
+
+We will use the [File Upload npm package for Expressjs](https://www.npmjs.com/package/express-fileupload).
+
+
+
 ## Angular as a Templating Engine
 
 Let's look at using Angular as our page templating language. Documentation for the features we will be using is located [here](https://docs.angularjs.org/guide).
@@ -1040,7 +1046,7 @@ app.component('recipeDetail', {
 
 https://www.zeolearn.com/magazine/connecting-reactjs-frontend-with-nodejs-backend
 
-https://www.npmjs.com/package/express-fileupload
+
 
 
 ```js
