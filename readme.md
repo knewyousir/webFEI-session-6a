@@ -1,11 +1,10 @@
 # V - Transitioning to the Front End
 
-<!-- TOC -->autoauto- [V - Transitioning to the Front End](#v---transitioning-to-the-front-end)auto  - [1. Homework Review](#1-homework-review)auto    - [1.1. Environment Variables](#11-environment-variables)auto    - [1.2. Transpiling to CSS](#12-transpiling-to-css)auto    - [1.3. Adding a Recipe](#13-adding-a-recipe)auto    - [1.4. Responsive Recipes](#14-responsive-recipes)auto  - [2. ES6 Modules](#2-es6-modules)auto    - [2.1. ES6 Modules - Demo](#21-es6-modules---demo)auto  - [3. Webpack](#3-webpack)auto    - [3.1. Our Script](#31-our-script)auto  - [4. Babel](#4-babel)auto    - [4.1. ES6 Module Syntax (Demo)](#41-es6-module-syntax-demo)auto  - [5. Angular as a Templating Engine](#5-angular-as-a-templating-engine)auto    - [5.1. Our first Component](#51-our-first-component)auto    - [5.2. Routing and Multiple Components](#52-routing-and-multiple-components)auto    - [5.3. $HTTP](#53-http)auto    - [5.4. Adding Routing to Display Individual Recipes](#54-adding-routing-to-display-individual-recipes)auto    - [5.5. Adding the Detail Template](#55-adding-the-detail-template)auto    - [5.6. Deleting a Recipe](#56-deleting-a-recipe)auto    - [5.7. Adding a Recipe](#57-adding-a-recipe)auto    - [5.8. Updating a Recipe](#58-updating-a-recipe)auto    - [5.9. Test with Curl](#59-test-with-curl)auto    - [5.10. Edit Recipe in the Detail Template](#510-edit-recipe-in-the-detail-template)auto    - [5.11. Back button](#511-back-button)auto    - [5.12. Edit Button](#512-edit-button)auto  - [6. Notes](#6-notes)auto    - [6.1. Adding an Image](#61-adding-an-image)auto    - [6.2. ng-click](#62-ng-click)autoauto<!-- /TOC -->
+## Homework
 
+Work on your API for the midterm.
 
-Add links to the recipe titles in the (non angular) template. When the user clicks on a link they should see a recipe detail page. Try to add navigation to go back to the main recipe listing page.
-
-## 1. Homework Review
+## Homework Review
 
 Clone the current session by `cd`ing to the desktop and entering:
 
@@ -22,13 +21,7 @@ npm start
 
 Visit `localhost:3001` in the browser.
 
-I've externalized the `scripts.js` file for `index.html` and it isn't loading. You will need to enable a static directory in  `app.js` file:
-
-```js
-app.use(express.static('app'));
-```
-
-### 1.1. Environment Variables
+### Environment Variables
 
 Edit the mongoUri variable in `app.js` to use your own database on mLab.
 
@@ -220,7 +213,7 @@ and remove the call added earlier:
 // getEm();
 ``` -->
 
-### 1.2. Transpiling to CSS
+### Transpiling to CSS
 
 Add the following css to `scss/imports/_recipes.scss`:
 
@@ -267,7 +260,7 @@ img {
 }
 ```
 
-### 1.3. Adding a Recipe
+### Adding a Recipe
 
 Here is the form we used in a previous lesson:
 
@@ -337,7 +330,7 @@ Edit the controller:
 
 `// return res.sendStatus(200);`
 
-### 1.4. Responsive Recipes
+### Responsive Recipes
 
 We need to be able to better see our recipes. Add the following to `_recipes.scss`:
 
@@ -417,7 +410,7 @@ Add the variable to `_variables.scss`:
 $breakSm: 380px;
 ```
 
-## 2. ES6 Modules
+## ES6 Modules
 
 Code fencing and organization techniques - IIFEs, function expressions.
 
@@ -427,7 +420,7 @@ We have seen CommonJS Modules in Node and are using [them](https://nodejs.org/ap
 
 <!-- ES6 modules are not natively supported in the browser so we need to bundle them. Having installed Webpack for bundling we can now use [them](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import). -->
 
-### 2.1. ES6 Modules - Demo
+### ES6 Modules - Demo
 
 Note the folder `module` in `app` and `index.html` at the top level:
 
@@ -488,7 +481,7 @@ function getComponent () {
 document.body.appendChild(getComponent());
 ```
 
-## 3. Webpack
+## Webpack
 
 `npm i webpack webpack-cli -D`
 
@@ -521,7 +514,7 @@ module.exports = {
   <script src="bundle.js"></script>
 ```
 
-### 3.1. Our Script
+### Our Script
 
 By default the webpack entry value is `./src/index.js`.
 
@@ -661,7 +654,7 @@ e.g.: try temporarily commenting out this line in `fetch.js`:
 
 `export default fetchRecipes;`
 
-## 4. Babel
+## Babel
 
 I'll be following these instructions for adding [Babel](https://webpack.js.org/loaders/babel-loader/#src/components/Sidebar/Sidebar.jsx) to Webpack.
 
@@ -703,7 +696,7 @@ Restart the server with and view `http://localhost:3000/`.
 
 (One of the best resources for Webpack is the book at [survivejs](https://survivejs.com).)
 
-### 4.1. ES6 Module Syntax (Demo)
+### ES6 Module Syntax (Demo)
 
 Create `src/test.js`.
 
@@ -772,7 +765,7 @@ console.log(foo, url);
 
 See [the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) for options including `import as`, `export as` and exporting multiple items.
 
-## 5. Angular as a Templating Engine
+## Angular as a Templating Engine
 
 Let's look at using Angular as our page templating language. Documentation for the features we will be using is located [here](https://docs.angularjs.org/guide).
 
@@ -819,7 +812,7 @@ import ngRoute from 'angular-route';
 
 (Note that your bundle just got very large.)
 
-### 5.1. Our first Component
+### Our first Component
 
 Bootstrap the app in `index.html` and add a custom tag:
 
@@ -904,7 +897,7 @@ app.component('recipeList', {
 
 ``` -->
 
-### 5.2. Routing and Multiple Components
+### Routing and Multiple Components
 
 Create our first route using [Angular's ngRoute](https://docs.angularjs.org/api/ngRoute):
 
@@ -962,7 +955,7 @@ app.config(function config($locationProvider, $routeProvider) {
 });
 ```
 
-### 5.3. $HTTP
+### $HTTP
 
 We fetch the dataset from our server using Angular's built-in [$http](https://docs.angularjs.org/api/ng/service/$http) service.
 
@@ -1003,7 +996,7 @@ app.get('*', function(req, res) {
 });
 ```
 
-### 5.4. Adding Routing to Display Individual Recipes
+### Adding Routing to Display Individual Recipes
 
 Note the `recipe._id` expression in the anchor tag:
 
@@ -1055,7 +1048,7 @@ app.component('recipeDetail', {
 
 Clicking on the recipe links in the list view should take you to our stub template.
 
-### 5.5. Adding the Detail Template
+### Adding the Detail Template
 
 Create `templates/recipe.html`:
 
@@ -1117,7 +1110,7 @@ app.component('recipeDetail', {
 });
 ```
 
-### 5.6. Deleting a Recipe
+### Deleting a Recipe
 
 Wire up the `recipes` template with `<span ng-click="deleteRecipe(recipe._id)">✖︎</span>`:
 
@@ -1179,7 +1172,7 @@ $scope.deleteRecipe = (index, recipeid) =>
 
 Changes to the db persist and are relected in the view.
 
-<!-- ### 1.9.3. Animation
+<!-- ### Animation
 
 Check the project preferences:
 
@@ -1247,7 +1240,7 @@ ul li:nth-child(odd) {
 }
 ``` -->
 
-### 5.7. Adding a Recipe
+### Adding a Recipe
 
 Add a form to the recipes template:
 
@@ -1361,7 +1354,7 @@ app.component('recipeList', {
 ``` 
 -->
 
-### 5.8. Updating a Recipe
+### Updating a Recipe
 
 `put` HTTP actions in a REST API correlate to an Update method.
 
@@ -1389,7 +1382,7 @@ The model's update() takes three parameters:
 - JSON object of just the properties to update
 - callback function that returns any errors
 
-### 5.9. Test with Curl
+### Test with Curl
 
 We will need to construct this line using ids from the recipes listing and test it in a new Terminal tab. Edit the URL to reflect both the port and id of the target recipe:
 
@@ -1414,7 +1407,7 @@ PUT actions are cumbersome to test in the browser, so we'll use Postman to run t
 
 4: Test to see changes
 
-### 5.10. Edit Recipe in the Detail Template
+### Edit Recipe in the Detail Template
 
 We will allow the user to edit a recipe in the detail view - showing and hiding the editor in the UI using Angular's [ng-show / hide](https://docs.angularjs.org/api/ng/directive/ngShow) function.
 
@@ -1491,7 +1484,7 @@ app.get('*', (req, res) => {
 });
 ``` -->
 
-### 5.11. Back button
+### Back button
 
 ```js
 $scope.back = () => window.history.back();
@@ -1513,7 +1506,7 @@ app.component('recipeDetail', {
 });
 ```
 
-### 5.12. Edit Button
+### Edit Button
 
 Toggling the editor interface:
 
@@ -1606,9 +1599,9 @@ app.component('recipeDetail', {
 
 And test.
 
-## 6. Notes
+## Notes
 
-### 6.1. Adding an Image
+### Adding an Image
 
 Implement an image switcher within our recipe details component.
 
@@ -1649,7 +1642,7 @@ And make the following change to the template, adding a class for styling and a 
 
 (Note: we no longer need `"mainImageUrl": "images/home/lasagna-1.png",` in the json since we are now refering to the images array.)
 
-### 6.2. ng-click
+### ng-click
 
 Add a list of images to the template that we will click on to swap out the main image.
 
