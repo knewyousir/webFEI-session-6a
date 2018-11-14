@@ -10,12 +10,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express();
-const mongoUri = 'mongodb://devereld:dd2345@ds157223.mlab.com:57223/recipes-daniel';
-// const mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@ds157223.mlab.com:57223/${process.env.DB}`;
-// console.log(mongoUri)
+// const mongoUri = 'mongodb://devereld:dd2345@ds157223.mlab.com:57223/recipes-daniel';
+const mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@ds157223.mlab.com:57223/${process.env.DB}`;
+console.log(mongoUri)
 
-// this line always appears before any routes
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('app'));
 

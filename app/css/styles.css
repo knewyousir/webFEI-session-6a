@@ -13,15 +13,13 @@ img {
     .recipes {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr 1fr;
       grid-column-gap: 1.5rem;
       grid-row-gap: 1.5rem; } }
   .recipes h2 {
     color: #007eb6;
     font-family: lobster;
     font-size: 2.5rem;
-    border-bottom: 3px solid #999;
-    grid-column: 1 / span 2; }
+    border-bottom: 3px solid #999; }
   .recipes p {
     font-size: 1.25rem; }
 

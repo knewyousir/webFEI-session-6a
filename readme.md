@@ -23,15 +23,7 @@ Visit `localhost:3001` in the browser.
 
 ### Environment Variables
 
-Edit the mongoUri variable in `app.js` to use your own database on mLab.
-
-Since the data may be sensitive we will use a `.env` file.
-
-Install [dotenv](https://www.npmjs.com/package/dotenv):
-
-`npm i dotenv -S`
-
-Now create a `.env` file at the root of the project with:
+Edit the mongoUri variable in `.env` to use your own database on mLab.
 
 ```sh
 NODE_ENV=development
