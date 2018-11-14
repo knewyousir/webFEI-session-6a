@@ -90,16 +90,11 @@
 /*!**********************!*\
   !*** ./src/fetch.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
+__webpack_require__.r(__webpack_exports__);
 function fetchRecipes(url, callback) {
   fetch(url).then(function (res) {
     return res.json();
@@ -110,7 +105,7 @@ function fetchRecipes(url, callback) {
   });
 }
 
-exports.default = fetchRecipes;
+/* harmony default export */ __webpack_exports__["default"] = (fetchRecipes);
 
 /***/ }),
 
@@ -118,37 +113,29 @@ exports.default = fetchRecipes;
 /*!**********************!*\
   !*** ./src/getEm.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _fetch_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fetch.js */ "./src/fetch.js");
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _fetch = __webpack_require__(/*! ./fetch.js */ "./src/fetch.js");
-
-var _fetch2 = _interopRequireDefault(_fetch);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getEm(elem) {
-  (0, _fetch2.default)('http://localhost:3000/api/recipes', function (recipes) {
+  Object(_fetch_js__WEBPACK_IMPORTED_MODULE_0__["default"])('http://localhost:3000/api/recipes', function (recipes) {
     console.log(recipes);
-    var markup = "\n      <ul class=\"recipes\">\n        " + recipes.map(function (recipe) {
-      return "\n        <li>\n          <h2>" + recipe.title + "</h2>\n          <p>" + recipe.description + "</p>\n          <img src=\"img/" + recipe.image + "\" />\n\n          <h3>Ingredients</h3>\n          <ul class=\"ingredient\">" + recipe.ingredients.map(function (ingredient) {
-        return "<li>" + ingredient + "</li>";
-      }).join('') + "\n          </ul>\n\n          <h3>Steps</h3>\n          <ul class=\"ingredient\">\n          " + recipe.preparation.map(function (prep) {
-        return "<li>" + prep.step + "</li>";
-      }).join('') + "\n          </ul>\n\n        </li>\n        ";
-    }).join('') + "\n      </ul>\n    ";
+    var markup = "\n      <ul class=\"recipes\">\n        ".concat(recipes.map(function (recipe) {
+      return "\n        <li>\n          <h2>".concat(recipe.title, "</h2>\n          <p>").concat(recipe.description, "</p>\n          <img src=\"img/").concat(recipe.image, "\" />\n\n          <h3>Ingredients</h3>\n          <ul class=\"ingredient\">").concat(recipe.ingredients.map(function (ingredient) {
+        return "<li>".concat(ingredient, "</li>");
+      }).join(''), "\n          </ul>\n\n          <h3>Steps</h3>\n          <ul class=\"ingredient\">\n          ").concat(recipe.preparation.map(function (prep) {
+        return "<li>".concat(prep.step, "</li>");
+      }).join(''), "\n          </ul>\n\n        </li>\n        ");
+    }).join(''), "\n      </ul>\n    ");
     elem.innerHTML = markup;
   });
 }
 
-exports.default = getEm;
+/* harmony default export */ __webpack_exports__["default"] = (getEm);
 
 /***/ }),
 
@@ -156,20 +143,32 @@ exports.default = getEm;
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _getEm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getEm.js */ "./src/getEm.js");
+/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/test.js");
 
 
-var _getEm = __webpack_require__(/*! ./getEm.js */ "./src/getEm.js");
-
-var _getEm2 = _interopRequireDefault(_getEm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+console.log(_test__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var elem = document.querySelector('#app');
-(0, _getEm2.default)(elem);
+Object(_getEm_js__WEBPACK_IMPORTED_MODULE_0__["default"])(elem);
+
+/***/ }),
+
+/***/ "./src/test.js":
+/*!*********************!*\
+  !*** ./src/test.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var apiKey = 'abcdef';
+/* harmony default export */ __webpack_exports__["default"] = (apiKey);
 
 /***/ })
 

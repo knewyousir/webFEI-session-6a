@@ -1076,3 +1076,4 @@ exports.upload = function(req, res, next) {
   </div>
 ```
 
+`presets: ['@babel/preset-env']`
