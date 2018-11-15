@@ -4,6 +4,8 @@
 
 Work on your API for the midterm.
 
+Your midterm will consist of an API built in Node using ExpressJS _and_ a front end that accesses an api endpoint and displays content from it.
+
 ## Exercise
 
 Clone the current session by `cd`ing to the desktop and entering:
