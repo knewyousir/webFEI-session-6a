@@ -44,7 +44,7 @@ console.log(mongoUri)
 
 Test by going to the recipes end point [localhost:3000/api/recipes](localhost:3000/api/recipes).
 
-If you've changed ports you'll need to change the port number in `scripts.js`:
+If you've changed ports you'll need to change the port number in `getEm.js`:
 
 ```js
 fetchRecipes( 'http://localhost:3000/api/recipes', (recipes) => {
@@ -127,7 +127,7 @@ See [the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 ## Adding File Upload
 
-We will use the [File Upload](https://www.npmjs.com/package/express-fileupload) npm package for ExpressJS.
+To review our api we will add file uploading to it. We will use the [File Upload](https://www.npmjs.com/package/express-fileupload) npm package for ExpressJS.
 
 We will use the File Upload npm package for Expressjs.
 
@@ -153,7 +153,7 @@ Looking at the [example project](https://github.com/richardgirges/express-fileup
   <input type="file" name="file" />
   <input type="text" placeholder="File name" name="filename" />
   <button type='submit'>Submit</button>
-</form>  
+</form>
 ```
 
 Here is a working function for the api endpoint:
@@ -254,7 +254,7 @@ We created an instance of a module called `foodApp` in the variable `app` and op
 
 With this approach, instead of targeting specific elements in the DOM and adjusting a class here or a style there, you treat your data, or state, as the single source of truth.
 
-Other items to note:
+Items to note:
 
 - This is an example of [MVC](https://en.wikipedia.org/wiki/Model–view–controller) - Model, View, Controller
 - The use of `{{ }}` - "moustaches" or "handlebars" - in the template for evaluation
@@ -280,7 +280,7 @@ Add a template in a new folder: `app > templates > recipes.html`:
 </div>
 ```
 
-Edit the template declaration in myapp.js `templateUrl: '/templates/recipes.html',`:
+Edit the template declaration in index.js: `templateUrl: '/templates/recipes.html',`:
 
 ```js
 app.component('recipeList', {
@@ -313,13 +313,15 @@ app.component('recipeList', {
 });
 ```
 
-<!-- ### Formatting
+### Formatting
+
+You should already be running node-sass. You can also perform sass processing in VSCode by installing Live SASS Complier and creating a project setting with:
 
 ```js
 {
   "liveSassCompile.settings.formats": [
       {
-        "savePath": "static/css/",
+        "savePath": "/app/css/",
         "format": "expanded"
       }
     ],
@@ -329,12 +331,13 @@ app.component('recipeList', {
       "**/other/**"
     ],
 }
+```
 
-``` -->
+Add formatting for the links in `_recipes.scss`.
 
 ### Routing and Multiple Components
 
-Create our first route using [Angular's ngRoute](https://docs.angularjs.org/api/ngRoute):
+Create our first route using Angular's [ngRoute](https://docs.angularjs.org/api/ngRoute):
 
 ```js
 app.config(function config($locationProvider, $routeProvider) {
@@ -371,7 +374,7 @@ Use the `ng-view` directive to alow it to use whatever module we pass into it:
 </body>
 ```
 
-And add the template to our routes:
+Add a second path to our routes:
 
 ```js
 app.config(function config($locationProvider, $routeProvider) {
@@ -390,11 +393,11 @@ app.config(function config($locationProvider, $routeProvider) {
 });
 ```
 
-Test the route. Test the back / forward buttons and refresh.
+Test the route. 
 
 We do not have a path for `/recipes`.
 
-We could use a `*`:
+We can use a `*` in `app.js`:
 
 ```js
 app.get('*', function(req, res) {
@@ -402,7 +405,7 @@ app.get('*', function(req, res) {
 });
 ```
 
-But then our other routes would never fire.
+But then our other routes never fire. Try `http://localhost:3000/api/recipes`
 
 Note the routes in Express - `app.js`. Since they run in order we will change our front end route to a universal selector and move it so that it appears after all our api routes:
 
@@ -421,9 +424,11 @@ app.get('*', function(req, res) {
 });
 ```
 
+You should now be able to navigate between the two routes. This is now a Single Page Application.
+
 ### Adding Routing to Display Individual Recipes
 
-Note the `recipe._id` expression in the anchor tag:
+Note the `recipe._id` expression in the href attribute of the anchor tag:
 
 `<h1><a href="recipes/{{ recipe._id }}">{{ recipe.title }}</a></h1>`
 
@@ -508,24 +513,6 @@ app.component('recipeDetail', {
 });
 ```
 
-<!-- 
-```js
-app.config(function config($locationProvider, $routeProvider) {
-  $routeProvider
-    .when('/', {
-      template: '<h1>Home</h1>'
-    })
-    .when('/recipes', {
-      template: '<recipe-list></recipe-list>'
-    })
-    .when('/recipes/:recipeId', {
-      template: '<recipe-detail></recipe-detail>',
-    });
-  $locationProvider.html5Mode(true);
-});
-``` 
--->
-
 Add:
 
 - `$http` to the dependency list for our controller so we can access the api,
@@ -603,8 +590,8 @@ Catch the index in the function (`(index, recipeid)`) and call `then` on it to `
 
 ```js
 $scope.deleteRecipe = (index, recipeid) =>
-    $http.delete(`/api/recipes/${recipeid}`)
-    .then(() => $scope.recipes.splice(index, 1));
+  $http.delete(`/api/recipes/${recipeid}`)
+  .then(() => $scope.recipes.splice(index, 1));
 ```
 
 Changes to the db persist and are relected in the view.
@@ -660,7 +647,7 @@ app.component('recipeList', {
 
 Test by adding a recipe
 
-Edit the push to use the data returned by the response:
+Edit the push to use the data returned by the response and to reset the form:
 
 ```js
 $scope.addRecipe = function(data) {
@@ -671,6 +658,10 @@ $scope.addRecipe = function(data) {
     });
 };
 ```
+
+Our return value for creating a recipe needs to be adjusted.
+
+`return res.send(recipe);`
 
 <!-- 
 ```js
@@ -712,12 +703,12 @@ exports.update = function(req, res) {
 
     Recipe.update({ _id: id }, updates, function(err) {
         if (err) return console.log(err);
-        return res.sendStatus(202);
+        return res.sendStatus(200);
     });
 };
 ```
 
-Notice the updates variable storing the `req.body`. `req.body` is useful when you want to pass in larger chunks of data like a single JSON object. Here we will pass in a JSON object (following the schema) of only the model's properties you want to change.
+Notice the updates variable storing the `req.body`. `req.body` is useful when you want to pass in larger chunks of data like a single JSON object. Here we will pass in a JSON object (following the schema) of only the model's properties we want to change.
 
 The model's update() takes three parameters:
 
@@ -758,18 +749,21 @@ Edit `templates/recipe.html`:
 
 ```html
 <div class="wrap" ng-hide="editorEnabled">
-    <h1>{{ recipe.title }}</h1>
-    <img ng-src="img/{{ recipe.image }}"/>
-    <p>{{ recipe.description }}</p>
-  
-    <h3>Ingredients</h3>
-    <ul class="ingredients">
+  <ul class="recipes single">
+    <li>
+      <h2>{{ recipe.title }}</h2>
+      <img src="img/{{recipe.image}}" />
+      <p>{{ recipe.description }}</p>
+      <h3>Ingredients</h3>
+      <ul class="ingredients">
         <li ng-repeat="ingredient in recipe.ingredients">
-            {{ ingredient }}
+          {{ ingredient }}
         </li>
-    </ul>
-    <button ng-click="toggleEditor(recipe)">Edit</button>
-  </div>
+      </ul>
+    </li>
+  </ul>
+  <button ng-click="toggleEditor(recipe)">Edit</button>
+</div>
   
   <div class="wrap" ng-show="editorEnabled">
       <form ng-submit="saveRecipe(recipe, recipe._id)" name="updateRecipe">
@@ -844,7 +838,7 @@ app.component('recipeDetail', {
 });
 ```
 
-Test this by changing the default value to true:
+Test this by clicking on the edit button or by changing the default value to true:
 
 `this.editorEnabled = true;`
 
@@ -891,13 +885,13 @@ And test.
 
 ### Animation
 
-Check the project preferences:
+<!-- Check the project preferences:
 
 ```js
 {
   "liveSassCompile.settings.formats": [
       {
-        "savePath": "static/css/",
+        "savePath": "app/css/",
         "format": "expanded"
       }
     ],
@@ -907,15 +901,27 @@ Check the project preferences:
       "**/other/**"
     ],
 }
-```
+``` -->
 
-`npm i --save angular-animate@1.6.2`
+`npm i -S angular-animate@1.6.2`
+
+Import it to our bundle:
+
+```js
+import angular from 'angular';
+import ngRoute from 'angular-route';
+import ngAnimate from 'angular-animate';
+```
 
 Inject `ng-animate` as a dependency in the module:
 
-`const app = angular.module('recipeApp', ['ngAnimate']);`
+`const app = angular.module('foodApp', ['ngRoute', 'ngAnimate']);`
 
-Add the class `fade` to the `li`'s in the html.
+Add the class `fade` to the `li`'s in the recipes html:
+
+```html
+<li ng-repeat="recipe in recipes" class="fade">
+```
 
 Add this css to `_recipes.css`:
 
