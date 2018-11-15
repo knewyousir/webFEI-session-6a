@@ -265,7 +265,7 @@ Always include a single route in ExpressJS for your SPA page. Front end routes h
 
 Add a template in a new folder: `app > templates > recipes.html`:
 
-```html`
+```html
 <div class="wrap">
   <h2>Recipes</h2>
   <ul class="recipes">
