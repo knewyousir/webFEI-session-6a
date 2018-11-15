@@ -456,7 +456,7 @@ app.config(function config($locationProvider, $routeProvider) {
 Add:
 
 - `$http` to the dependency list for our controller so we can access the api,
-- `$routeParams` so we can access the id in the url, and
+- `$routeParams` so we can access the id in the url
 - `$scope` so we can make the results of the api call accessible to the view
 
 and use a function to load the data:
