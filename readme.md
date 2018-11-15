@@ -4,7 +4,7 @@
 
 Work on your API for the midterm.
 
-Your midterm will consist of an API built in Node using ExpressJS _and_ a front end that accesses an api endpoint and displays content from it.
+Your midterm will consist of an API built in Node using ExpressJS _and_ a front end that accesses an api endpoint and displays content from it. It is due on the 26th of November.
 
 ## Exercise
 
