@@ -1,15 +1,15 @@
-# V - Transitioning to the Front End
+# VI - Front End with Angular
 
 ## Homework
 
 Work on your API for the midterm.
 
-## Homework Review
+## Exercise
 
 Clone the current session by `cd`ing to the desktop and entering:
 
 ```sh
-git clone https://github.com/front-end-intermediate/session-5.git
+git clone https://github.com/front-end-intermediate/session-6a.git
 ```
 
 `cd` into the newly cloned folder, install the npm components from last class and kick off the application:
@@ -19,7 +19,7 @@ npm i
 npm start
 ```
 
-Visit `localhost:3001` in the browser.
+Visit `localhost:3000` in the browser.
 
 ### Environment Variables
 
@@ -30,10 +30,10 @@ NODE_ENV=development
 DB=recipes-daniel
 DB_USER=devereld
 DB_PW=dd2345
-PORT=3004
+PORT=3000
 ```
 
-Use the DB variable:
+Set up the DB variable:
 
 ```js
 const mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@ds157223.mlab.com:57223/${process.env.DB}`;
@@ -41,8 +41,6 @@ console.log(mongoUri)
 ```
 
 Test by going to the recipes end point [localhost:3000/api/recipes](localhost:3000/api/recipes).
-
-Return to the home page and click on the link. Note the error in the browser's console.
 
 If you've changed ports you'll need to change the port number in `scripts.js`:
 
@@ -52,18 +50,18 @@ fetchRecipes( 'http://localhost:3000/api/recipes', (recipes) => {
 }
 ```
 
-Visit the import endpoint to import recipes if needed.
+If needed, visit the import endpoint - `localhost:3000/api/import` - to import recipes.
 
-### ES6 Module Syntax (Demo)
+### Review ES6 Module Syntax
 
-Create `src/test.js`.
-
-Exporting data - using _default_ exports:
+Create `src/test.js`:
 
 ```js
 const apiKey = 'abcdef';
 export default apiKey;
 ```
+
+Exports data - using _default_ exports:
 
 Import it into `index.js` (note: paths are not necessary for node modules):
 
@@ -72,7 +70,7 @@ import apiKey from './test';
 console.log(apiKey);
 ```
 
-(Remember, `console.log(apiKey);` is now on the front end and appears in the browser's console.)
+(Remember, `console.log` is now on the front end and appears in the browser's console.)
 
 The path './test' is relative to the root established in `webpack.config.js`.
 
@@ -89,11 +87,13 @@ console.log(foo);
 
 ES6 Modules can only have one default export but _can_ have multiple named exports.
 
-A _named_ export in `test.js`:
+Create a _named_ export in `test.js`:
 
-`export const apiKey = 'abcdef';`
+```js
+export const apiKey = 'abcdef';
+```
 
-requires an import that selects it in `index.js`:
+This requires an import that selects it in `index.js`:
 
 ```js
 import { apiKey } from './test';
@@ -125,35 +125,63 @@ See [the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 ## Adding File Upload
 
-We will use the [File Upload npm package for Expressjs](https://www.npmjs.com/package/express-fileupload).
+We will use the [File Upload](https://www.npmjs.com/package/express-fileupload) npm package for ExpressJS.
 
+We will use the File Upload npm package for Expressjs.
 
+Install it:
+
+`npm i express-fileupload -S`
+
+Require, register and create a route for it in `app.js`:
+
+```js
+...
+const fileUpload = require('express-fileupload'); 
+...
+app.use(fileUpload());
+...
+app.post('/api/upload', recipes.upload);
+```
+
+Looking at the [example project](https://github.com/richardgirges/express-fileupload/tree/master/example) we find a form to use as a starting point.
+
+```html
+<form action='/api/upload' method='post' encType="multipart/form-data" >
+  <input type="file" name="file" />
+  <input type="text" placeholder="File name" name="filename" />
+  <button type='submit'>Submit</button>
+</form>  
+```
+
+Here is a working function for the api endpoint:
+
+```js
+exports.upload = function(req, res, next) {
+  console.log(req.files)
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  let file = req.files.file;
+  file.mv(`./app/img/${req.body.filename}.jpg`, err => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.json({ file: `app/img/${req.body.filename}.jpg` });
+    console.log(res.json);
+  });
+};
+```
+
+Upload an image and create a recipe that uses it.
 
 ## Angular as a Templating Engine
 
 Let's look at using Angular as our page templating language. Documentation for the features we will be using is located [here](https://docs.angularjs.org/guide).
 
-Save the contents of `index.js` and `index.html` to `index-OLD.html` and `index-OLD.js`. 
+<!-- Save the contents of `index.js` and `index.html` to `index-OLD.html` and `index-OLD.js`.  -->
 
-Edit `index.html` page in the `app` directory:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipes</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="/js/bundle.js"></script>
-</head>
-
-<body>
-    <p>It works</p>
-</body>
-
-</html>
-```
+Create a new branch in order to save the pre-Angular work.
 
 The npm installs for Angular:
 
@@ -181,11 +209,23 @@ import ngRoute from 'angular-route';
 Bootstrap the app in `index.html` and add a custom tag:
 
 ```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="/js/bundle.js"></script>
+</head>
+
 <body ng-app="foodApp">
   <div>
     <recipe-list></recipe-list>
   </div>
 </body>
+
+</html>
 ```
 
 Create the first component:
@@ -206,15 +246,22 @@ app.component('recipeList', {
 
 View the page in the browser.
 
+We created an instance of a module called `foodApp` in the variable `app` and optionally loaded front end routing (`ngRoute`) using dependency injection.
 
-- [MVC](https://en.wikipedia.org/wiki/Model–view–controller) - Model, View, Controller
-- `{{ }}` - "moustaches" or "handlebars" in the template evaluate a value
-- `$scope` - the "glue" between application controller and the view (the state)
+`$scope` is our _state_ - data at a particular moment in time. It’s the present state of our data.
+
+With this approach, instead of targeting specific elements in the DOM and adjusting a class here or a style there, you treat your data, or state, as the single source of truth.
+
+Other items to note:
+
+- This is an example of [MVC](https://en.wikipedia.org/wiki/Model–view–controller) - Model, View, Controller
+- The use of `{{ }}` - "moustaches" or "handlebars" - in the template for evaluation
+- State: `$scope` - the "glue" between application controller and the view (the state)
 - ng-model (and ng-repeat etc.) is an Angular [directive](https://docs.angularjs.org/api/ng/directive)
 - AngularJS vs Angular
 - Dependency injection for `ngRoute`
 
-`ngRoute` is the router for front end views. Always include a single route in Express for your SPA page. Front end routes handle the view (templates) and the logic (controllers) for the views.
+Always include a single route in ExpressJS for your SPA page. Front end routes handle the view (templates) and the logic (controllers) for the views.
 
 Add a template in a new folder: `app > templates > recipes.html`:
 
@@ -223,12 +270,12 @@ Add a template in a new folder: `app > templates > recipes.html`:
   <h2>Recipes</h2>
   <ul class="recipes">
     <li ng-repeat="recipe in recipes">
-    <img ng-src="img/{{ recipe.image }}">
-    <h2><a href="recipes/{{ recipe._id }}">{{ recipe.title }}</a></h2>
-    <p>{{ recipe.description }}</p>
+      <img ng-src="img/{{ recipe.image }}">
+      <h2><a href="recipes/{{ recipe._id }}">{{ recipe.title }}</a></h2>
+      <p>{{ recipe.description }}</p>
     </li>
   </ul>
-  </div>
+</div>
 ```
 
 Edit the template declaration in myapp.js `templateUrl: '/templates/recipes.html',`:
@@ -238,6 +285,28 @@ app.component('recipeList', {
   templateUrl: '/templates/recipes.html',
   controller: function RecipeListController($scope) {
     $scope.name = 'Recipe List'
+  }
+});
+```
+
+### $HTTP
+
+We fetch the dataset from our server using Angular's built-in [$http](https://docs.angularjs.org/api/ng/service/$http) service.
+
+- a core (built into Angular) service that facilitates communication with the remote HTTP servers
+- need to make it available to the recipeList component's controller via [dependency injection](https://docs.angularjs.org/guide/di)
+- AngularJS predates `fetch`
+
+Use `get` method with `$http` to fetch the json from the data folder:
+
+```js
+app.component('recipeList', {
+  templateUrl: '/templates/recipes.html',
+  controller: function RecipeListController($scope, $http) {
+    $http.get('api/recipes').then( res => {
+      $scope.recipes = res.data;
+      console.log($scope.recipes);
+    });
   }
 });
 ```
@@ -287,9 +356,9 @@ Add in the head of index.html:
 Currently the component is hard coded:
 
 ```html
-  <div>
-    <recipe-list></recipe-list>
-  </div>
+<div>
+  <recipe-list></recipe-list>
+</div>
 ```
 
 Use the `ng-view` directive to alow it to use whatever module we pass into it:
@@ -319,29 +388,19 @@ app.config(function config($locationProvider, $routeProvider) {
 });
 ```
 
-### $HTTP
+Test the route. Test the back / forward buttons and refresh.
 
-We fetch the dataset from our server using Angular's built-in [$http](https://docs.angularjs.org/api/ng/service/$http) service.
+We do not have a path for `/recipes`.
 
-- a core (built into Angular) service that facilitates communication with the remote HTTP servers
-- need to make it available to the recipeList component's controller via [dependency injection](https://docs.angularjs.org/guide/di)
-- AngularJS predates `fetch`
-
-Use `get` method with `$http` to fetch the json from the data folder:
+We could use a `*`:
 
 ```js
-app.component('recipeList', {
-  templateUrl: '/templates/recipes.html',
-  controller: function RecipeListController($scope, $http) {
-    $http.get('api/recipes').then( res => {
-      $scope.recipes = res.data;
-      console.log($scope.recipes);
-    });
-  }
+app.get('*', function(req, res) {
+  res.sendFile(__dirname + '/app/index.html');
 });
 ```
 
-Test the route. 
+But then our other routes would never fire.
 
 Note the routes in Express - `app.js`. Since they run in order we will change our front end route to a universal selector and move it so that it appears after all our api routes:
 
@@ -438,6 +497,17 @@ Create `templates/recipe.html`:
 Edit the component to use `templateUrl: '/templates/recipe.html',`:
 
 ```js
+app.component('recipeDetail', {
+  templateUrl: '/templates/recipe.html',
+
+  controller: function RecipeDetailController($scope, $routeParams) {
+    $scope.recipeId = $routeParams.recipeId;
+  }
+});
+```
+
+<!-- 
+```js
 app.config(function config($locationProvider, $routeProvider) {
   $routeProvider
     .when('/', {
@@ -451,7 +521,8 @@ app.config(function config($locationProvider, $routeProvider) {
     });
   $locationProvider.html5Mode(true);
 });
-```
+``` 
+-->
 
 Add:
 
@@ -459,11 +530,11 @@ Add:
 - `$routeParams` so we can access the id in the url
 - `$scope` so we can make the results of the api call accessible to the view
 
-and use a function to load the data:
+and use the controller function to load the data:
 
 ```js
 app.component('recipeDetail', {
-  template: '<div class="wrap">Detail view for {{recipeId}}</div>',
+  templateUrl: '/templates/recipe.html',
 
   controller: function RecipeDetailController($http, $routeParams, $scope) {
     $http.get('api/recipes/' + $routeParams.recipeId).then(res => {
@@ -481,7 +552,7 @@ Wire up the `recipes` template with `<span ng-click="deleteRecipe(recipe._id)">�
 ```html
 <div class="wrap">
     <ul class="recipes">
-        <li ng-repeat="recipe in recipes | filter:query | orderBy:orderProp">
+        <li ng-repeat="recipe in recipes">
         <img ng-src="img/{{ recipe.image }}">
         <h2><a href="recipes/{{ recipe._id }}">{{ recipe.title }}</a></h2>
         <p>{{ recipe.description }}</p>
@@ -513,10 +584,10 @@ And test.
 Use the api:
 
 ```js
-    $scope.deleteRecipe = recipeid => $http.delete('/api/recipes/' + recipeid);
+$scope.deleteRecipe = recipeid => $http.delete('/api/recipes/' + recipeid);
 ```
 
-Clicking on an `✖︎` will remove a recipe but you need to refresh to see the result. It has no effect on the view ($scope).
+Clicking on an `✖︎` will remove a recipe but you need to refresh to see the result. It has no effect on the view.
 
 Pass the `index` of the selected recipe to the function:
 
@@ -630,25 +701,27 @@ $scope.addRecipe = function(data) {
 e.g.:
 
 ```js
-const app = angular.module('recipeApp', ['ngAnimate']);
-
 app.component('recipeList', {
-    templateUrl: '/js/recipe-list.template.html',
-    controller: function RecipeAppController($http, $scope) {
-        $http.get('/api/recipes').then(res => {
-            $scope.recipes = res.data;
-        });
-
-        $scope.deleteRecipe = (index, recipeid) =>
-            $http.delete('/api/recipes/' + recipeid).then(() => $scope.recipes.splice(index, 1));
-
-        $scope.addRecipe = function(data) {
-            $http.post('/api/recipes/', data).then(() => {
-                $scope.recipes.push(data);
-            });
-        };
+  templateUrl: '/templates/recipes.html',
+  
+  controller: function RecipeListController($scope, $http) {
+    $http.get('api/recipes').then( res => {
+      $scope.recipes = res.data;
+    });
+    
+    $scope.deleteRecipe = (index, recipeid) => {
+      $http.delete(`/api/recipes/${recipeid}`)
+      .then(() => $scope.recipes.splice(index, 1));
     }
+    
+    $scope.addRecipe = function(data) {
+      $http.post('/api/recipes/', data).then(() => {
+        $scope.recipes.push(data);
+      });
+    };
+  }
 });
+
 ```
 
 Test by adding a recipe
@@ -663,34 +736,6 @@ $scope.addRecipe = function(data) {
         $scope.recipe = {};
     });
 };
-```
-
-The complete component:
-
-```js
-app.component('recipeList', {
-  templateUrl: '/templates/recipes.html',
-  controller: function RecipeListController($scope, $http) {
-    $http.get('api/recipes').then( res => {
-      $scope.recipes = res.data;
-    });
-
-    $scope.orderProp = 'date';
-
-    $scope.deleteRecipe = (index, recipeid) => {
-      console.log(index, recipeid)
-      $http.delete(`/api/recipes/${recipeid}`)
-      .then ($scope.recipes.splice(index, 1));
-    }
-
-    $scope.addRecipe = function(data) {
-      $http.post('/api/recipes/', data).then(() => {
-        $scope.recipes.push(data);
-      });
-    };
-
-  }
-});
 ```
 
 <!-- 
@@ -753,7 +798,7 @@ We will need to construct this line using ids from the recipes listing and test 
 (Check the below for proper URL - it changes depending on the port in use as well as the id.)
 
 ```sh
-curl -i -X PUT -H 'Content-Type: application/json' -d '{"title": "Big Mac"}' http://localhost:3002/api/recipes/5b32895059ea391966aa3825
+curl -i -X PUT -H 'Content-Type: application/json' -d '{"title": "Big Mac"}' http://localhost:3000/api/recipes/5bed996897eee1e1b3cc6d5a
 
 ```
 
@@ -779,37 +824,37 @@ Edit `templates/recipe.html`:
 
 ```html
 <div class="wrap" ng-hide="editorEnabled">
-  <h1>{{ recipe.title }}</h1>
-  <img ng-src="img/recipes/{{ recipe.image }}" style="width: 200px;"/>
-  <p>{{ recipe.description }}</p>
-
-  <h3>Ingredients</h3>
-  <ul class="ingredients">
-      <li ng-repeat="ingredient in recipe.ingredients">
-          {{ ingredient }}
-      </li>
-  </ul>
-  <button ng-click="toggleEditor(recipe)">Edit</button>
-</div>
-
-<div class="wrap" ng-show="editorEnabled">
-    <form ng-submit="saveRecipe(recipe, recipe._id)" name="updateRecipe">
-        <label>Title</label>
-        <input ng-model="recipe.title">
-        <label>Date</label>
-        <input ng-model="recipe.date">
-        <label>Description</label>
-        <input ng-model="recipe.description">
-        <label>Image</label>
-        <input ng-model="recipe.image">
-        <label>ID</label>
-        <input ng-model="recipe._id">
-        <button type="submit">Submit</button>
-    </form>
-    <button type="cancel" ng-click="toggleEditor()">Cancel</button>
-</div>
-
-<button type="submit" ng-click="back()">Back</button>
+    <h1>{{ recipe.title }}</h1>
+    <img ng-src="img/{{ recipe.image }}"/>
+    <p>{{ recipe.description }}</p>
+  
+    <h3>Ingredients</h3>
+    <ul class="ingredients">
+        <li ng-repeat="ingredient in recipe.ingredients">
+            {{ ingredient }}
+        </li>
+    </ul>
+    <button ng-click="toggleEditor(recipe)">Edit</button>
+  </div>
+  
+  <div class="wrap" ng-show="editorEnabled">
+      <form ng-submit="saveRecipe(recipe, recipe._id)" name="updateRecipe">
+          <label>Title</label>
+          <input ng-model="recipe.title">
+          <label>Date</label>
+          <input ng-model="recipe.date">
+          <label>Description</label>
+          <input ng-model="recipe.description">
+          <label>Image</label>
+          <input ng-model="recipe.image">
+          <label>ID</label>
+          <input ng-model="recipe._id">
+          <button type="submit">Submit</button>
+      </form>
+      <button type="cancel" ng-click="toggleEditor()">Cancel</button>
+  </div>
+  
+  <button type="submit" ng-click="back()">Back</button>
 ```
 
 <!-- Add a link using the id `href="/recipes/{{ recipe._id }}"` to the existing `recipe-list.template`:
@@ -863,9 +908,11 @@ app.component('recipeDetail', {
   controller: function RecipeDetailController($http, $routeParams, $scope) {
     $http.get('api/recipes/' + $routeParams.recipeId).then(res => {
       ($scope.recipe = res.data);
+      console.log($scope.recipe);
     });
 
     $scope.back = () => window.history.back();
+    
   }
 });
 ```
@@ -875,8 +922,8 @@ app.component('recipeDetail', {
 Toggling the editor interface:
 
 ```js
-    $scope.editorEnabled = false;
-    $scope.toggleEditor = () => ($scope.editorEnabled = !$scope.editorEnabled);
+$scope.editorEnabled = false;
+$scope.toggleEditor = () => ($scope.editorEnabled = !$scope.editorEnabled);
 ```
 
 e.g.:
@@ -889,52 +936,28 @@ app.component('recipeDetail', {
     $http.get('api/recipes/' + $routeParams.recipeId).then(res => {
       ($scope.recipe = res.data);
     });
-
+    
     $scope.back = () => window.history.back();
-
+    
     $scope.editorEnabled = false;
     $scope.toggleEditor = () => ($scope.editorEnabled = !$scope.editorEnabled);
+    
   }
 });
 ```
 
-<!-- Test this by changing the default value to true:
+Test this by changing the default value to true:
 
 `this.editorEnabled = true;`
 
-Add a button that only shows when the editor is on:
-
-```html
-<button type="cancel" ng-click="$ctrl.toggleEditor()">Cancel</button>
-```
-
-e.g.:
-
-```html
-<div ng-show="$ctrl.editorEnabled">
-    <form ng-submit="$ctrl.saveRecipe($ctrl.recipe, $ctrl.recipe._id)" name="updateRecipe">
-        <label>Title</label>
-        <input ng-model="$ctrl.recipe.title">
-        <label>Date</label>
-        <input ng-model="$ctrl.recipe.date">
-        <label>Description</label>
-        <input ng-model="$ctrl.recipe.description">
-        <label>Image</label>
-        <input ng-model="$ctrl.recipe.image">
-        <label>ID</label>
-        <input ng-model="$ctrl.recipe._id">
-        <input type="submit" value="Save">
-    </form>
-    <button type="cancel" ng-click="$ctrl.toggleEditor()">Cancel</button>
-</div>
-<button type="submit" ng-click="$ctrl.back()">Back</button>
-``` -->
+Set it back to false.
 
 Update the recipe detail controller with a save recipe function:
 
 ```js
 $scope.saveRecipe = (recipe, recipeid) => {
-  $http.put('/api/recipes/' + recipeid, recipe).then(res => ($scope.editorEnabled = false));
+  $http.put('/api/recipes/' + recipeid, recipe)
+  .then(res => ($scope.editorEnabled = false));
 };
 ```
 
@@ -947,16 +970,19 @@ app.component('recipeDetail', {
   controller: function RecipeDetailController($http, $routeParams, $scope) {
     $http.get('api/recipes/' + $routeParams.recipeId).then(res => {
       ($scope.recipe = res.data);
+      console.log($scope.recipe);
     });
 
+    $scope.saveRecipe = (recipe, recipeid) => {
+      $http.put('/api/recipes/' + recipeid, recipe)
+      .then(res => ($scope.editorEnabled = false));
+    };
+    
     $scope.back = () => window.history.back();
-
+    
     $scope.editorEnabled = false;
     $scope.toggleEditor = () => ($scope.editorEnabled = !$scope.editorEnabled);
-
-    $scope.saveRecipe = (recipe, recipeid) => {
-      $http.put('/api/recipes/' + recipeid, recipe).then(res => ($scope.editorEnabled = false));
-    };
+    
   }
 });
 ```
@@ -1045,41 +1071,5 @@ app.component('recipeDetail', {
 `https://www.contentful.com/blog/2017/04/04/es6-modules-support-lands-in-browsers-is-it-time-to-rethink-bundling/`
 
 https://www.zeolearn.com/magazine/connecting-reactjs-frontend-with-nodejs-backend
-
-
-
-
-```js
-const cors = require('cors'); // addition we make
-const fileUpload = require('express-fileupload'); //addition we make
-app.use(fileUpload());
-
-app.post('/api/upload', recipes.upload);
-
-exports.upload = function(req, res, next) {
-  console.log(req.files)
-  if (Object.keys(req.files).length == 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
-  let file = req.files.file;
-  file.mv(`./app/img/${req.body.filename}.jpg`, err => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.json({ file: `app/img/${req.body.filename}.jpg` });
-    console.log(res.json);
-  });
-};
-```
-
-```html
-  <div>
-    <form action='/api/upload' method='post' encType="multipart/form-data" >
-      <input type="file" name="file" />
-      <input type="text" placeholder="File name (.jpg only)" name="filename" />
-      <button type='submit'>Submit</button>
-    </form>   
-  </div>
-```
 
 `presets: ['@babel/preset-env']`
