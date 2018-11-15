@@ -447,7 +447,7 @@ app.config(function config($locationProvider, $routeProvider) {
       template: '<recipe-list></recipe-list>'
     })
     .when('/recipes/:recipeId', {
-      templateUrl: '/templates/recipe.html',
+      template: '<recipe-detail></recipe-detail>',
     });
   $locationProvider.html5Mode(true);
 });
