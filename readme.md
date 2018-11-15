@@ -607,74 +607,6 @@ $scope.deleteRecipe = (index, recipeid) =>
 
 Changes to the db persist and are relected in the view.
 
-<!-- ### Animation
-
-Check the project preferences:
-
-```js
-{
-  "liveSassCompile.settings.formats": [
-      {
-        "savePath": "static/css/",
-        "format": "expanded"
-      }
-    ],
-    "liveSassCompile.settings.excludeList": [
-      "**/node_modules/**",
-      ".vscode/**",
-      "**/other/**"
-    ],
-}
-```
-
-`npm i --save angular-animate@1.6.2`
-
-Inject `ng-animate` as a dependency in the module:
-
-`const app = angular.module('recipeApp', ['ngAnimate']);`
-
-Add the class `fade` to the `li`'s in the html.
-
-Add this css to `_base.css`:
-
-```css
-ul li:nth-child(odd) {
-    background: #bada55;
-}
-
-.fade.ng-enter {
-    animation: 2s appear;
-}
-.fade.ng-leave {
-    animation: 0.5s disappear;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateX(-200px);
-    }
-    to {
-        opacity: 1;
-    }
-}
-@keyframes disappear {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        font-size: 0.75rem;
-    }
-    75% {
-        color: green;
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(-100%);
-    }
-}
-``` -->
-
 ### Adding a Recipe
 
 Add a form to the recipes template:
@@ -857,42 +789,6 @@ Edit `templates/recipe.html`:
   <button type="submit" ng-click="back()">Back</button>
 ```
 
-<!-- Add a link using the id `href="/recipes/{{ recipe._id }}"` to the existing `recipe-list.template`:
-
-```html
-<ul>
-  <li ng-repeat="recipe in recipes" class="fade">
-      <a href="/recipes/{{ recipe._id }}">{{ recipe.title }} / {{ recipe._id }}</a>
-      <span ng-click="deleteRecipe($index, recipe._id)">✖︎</span>
-  </li>
-</ul>
-```
-
-2: Create a `recipeDetail` component in the module.
-
-Use $http.get and $routeParams to grab the info from our api route:
-
-```js
-app.component('recipeDetail', {
-    templateUrl: '/js/recipe-detail.template.html',
-    controller: function RecipeDetailController($http, $routeParams) {
-        $http.get('/api/recipes/' + $routeParams.recipeId).then(response => (this.recipe = response.data));
-    }
-});
-``` -->
-
-<!-- Test by clicking on one of the links - you should now be able to view the detail template.
-
-Due to routes in `app.js` refreshing a detail page will not work.
-
-We can try the following in `app.js`
-
-```js
-app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/static/index.html');
-});
-``` -->
-
 ### Back button
 
 ```js
@@ -991,9 +887,79 @@ And test.
 
 ## Notes
 
-### Adding an Image
+### Animation
+
+Check the project preferences:
+
+```js
+{
+  "liveSassCompile.settings.formats": [
+      {
+        "savePath": "static/css/",
+        "format": "expanded"
+      }
+    ],
+    "liveSassCompile.settings.excludeList": [
+      "**/node_modules/**",
+      ".vscode/**",
+      "**/other/**"
+    ],
+}
+```
+
+`npm i --save angular-animate@1.6.2`
+
+Inject `ng-animate` as a dependency in the module:
+
+`const app = angular.module('recipeApp', ['ngAnimate']);`
+
+Add the class `fade` to the `li`'s in the html.
+
+Add this css to `_recipes.css`:
+
+```css
+li:nth-child(odd) {
+    background: #bada55;
+}
+
+.fade.ng-enter {
+    animation: 2s appear;
+}
+.fade.ng-leave {
+    animation: 0.5s disappear;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateX(-200px);
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes disappear {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        font-size: 0.75rem;
+    }
+    75% {
+        color: green;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+```
+
+### Adding an Image Carousel
 
 Implement an image switcher within our recipe details component.
+
+Requires an api the supports multiple images (an array) for a recipe.
 
 Note this entry in recipe1309.json: `"mainImageUrl": "lasagna-1.png",`
 
