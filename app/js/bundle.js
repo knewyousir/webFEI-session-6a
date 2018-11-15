@@ -149,26 +149,9 @@ function getEm(elem) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getEm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getEm.js */ "./src/getEm.js");
-/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/test.js");
 
-
-console.log(_test__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var elem = document.querySelector('#app');
 Object(_getEm_js__WEBPACK_IMPORTED_MODULE_0__["default"])(elem);
-
-/***/ }),
-
-/***/ "./src/test.js":
-/*!*********************!*\
-  !*** ./src/test.js ***!
-  \*********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-var apiKey = 'abcdef';
-/* harmony default export */ __webpack_exports__["default"] = (apiKey);
 
 /***/ })
 
