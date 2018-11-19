@@ -36,7 +36,15 @@ exports.upload = function(req, res, next) {
   });
 };
 
-exports.update = function() {};
+exports.update = function(req, res) {
+  const id = req.params.id;
+  const updates = req.body;
+
+  Recipe.update({ _id: id }, updates, function(err) {
+    if (err) return console.log(err);
+    return res.sendStatus(200);
+  });
+};
 
 exports.delete = function(req, res) {
   let id = req.params.id;

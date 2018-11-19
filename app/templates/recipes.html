@@ -1,0 +1,20 @@
+<div class="wrap">
+    <h2>Recipes</h2>
+    
+    <ul class="recipes">
+        <li ng-repeat="recipe in recipes">
+            <img ng-src="img/{{ recipe.image }}">
+            <h2><a href="recipes/{{ recipe._id }}">{{ recipe.title }}</a></h2>
+            <p>{{ recipe.description }}</p>
+            <span ng-click="deleteRecipe(index, recipe._id)">✖︎</span>
+        </li>
+    </ul>
+    
+    <form ng-submit="addRecipe(recipe)">
+        <input type="text" ng-model="recipe.title" required placeholder="Title" />
+        <textarea type="text" ng-model="recipe.description" required placeholder="Description"></textarea>
+        <input type="text" ng-model="recipe.image" required placeholder="Image" />
+        <button type="submit">Add Recipe</button>
+    </form>
+    
+</div>

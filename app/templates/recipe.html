@@ -1,0 +1,16 @@
+<div class="wrap">
+    <ul class="recipes single">
+        <li>
+            <h2>{{ recipe.title }}</h2>
+            <img src="img/{{recipe.image}}" />
+            <p>{{ recipe.description }}</p>
+            
+            <h3>Ingredients</h3>
+            <ul class="ingredients">
+                <li ng-repeat="ingredient in recipe.ingredients">
+                    {{ ingredient }}
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
