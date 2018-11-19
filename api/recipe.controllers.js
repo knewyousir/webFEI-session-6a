@@ -21,6 +21,21 @@ exports.add = function(req, res) {
   })
 };
 
+exports.upload = function(req, res, next) {
+  console.log(req.files)
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  let file = req.files.file;
+  file.mv(`./app/img/${req.body.filename}.jpg`, err => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.json({ file: `app/img/${req.body.filename}.jpg` });
+    console.log(res.json);
+  });
+};
+
 exports.update = function() {};
 
 exports.delete = function(req, res) {

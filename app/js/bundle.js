@@ -149,9 +149,37 @@ function getEm(elem) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getEm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getEm.js */ "./src/getEm.js");
+/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/test.js");
+ // import foo from './test';
+// console.log(foo);
 
+
+Object(_test__WEBPACK_IMPORTED_MODULE_1__["sayHi"])('daniel');
+console.log(_test__WEBPACK_IMPORTED_MODULE_1__["apiKey"], _test__WEBPACK_IMPORTED_MODULE_1__["url"]);
 var elem = document.querySelector('#app');
 Object(_getEm_js__WEBPACK_IMPORTED_MODULE_0__["default"])(elem);
+
+/***/ }),
+
+/***/ "./src/test.js":
+/*!*********************!*\
+  !*** ./src/test.js ***!
+  \*********************/
+/*! exports provided: apiKey, url, sayHi */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "apiKey", function() { return apiKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "url", function() { return url; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sayHi", function() { return sayHi; });
+// const apiKey = 'abcdef';
+// export default apiKey;
+var apiKey = 'abcdef';
+var url = 'https://mlab.com';
+function sayHi(name) {
+  console.log("Say hello ".concat(name));
+}
 
 /***/ })
 

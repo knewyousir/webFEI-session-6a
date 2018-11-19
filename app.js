@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
 
 const recipeModels = require('./api/recipe.model');
 const recipes = require('./api/recipe.controllers');
@@ -11,12 +12,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express();
 // const mongoUri = 'mongodb://devereld:dd2345@ds157223.mlab.com:57223/recipes-daniel';
-const mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@ds157223.mlab.com:57223/${process.env.DB}`;
+const mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@ds159993.mlab.com:59993/${process.env.DB}`;
 console.log(mongoUri)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('app'));
+app.use(fileUpload());
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/app/index.html');
@@ -25,6 +27,7 @@ app.get('/', function(req, res) {
 app.get('/api/recipes', recipes.findAll);
 app.get('/api/recipes/:id', recipes.findById);
 app.post('/api/recipes', recipes.add);
+app.post('/api/upload', recipes.upload);
 app.put('/api/recipes/:id', recipes.update);
 app.delete('/api/recipes/:id', recipes.delete);
 app.get('/api/import', recipes.import);

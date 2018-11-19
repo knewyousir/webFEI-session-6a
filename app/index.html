@@ -21,6 +21,12 @@
     <button type="submit">Submit</button>
   </form>
   
+  <form action='/api/upload' method='post' encType="multipart/form-data" >
+    <input type="file" name="file" />
+    <input type="text" placeholder="File name" name="filename" />
+    <button type='submit'>Submit</button>
+  </form>
+
   <div id="app"></div>
   
   <script src="js/bundle.js"></script>
